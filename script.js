@@ -1,17 +1,43 @@
+
+
+// Function to highlight the current page
+function highlightCurrentPage() {
+    // Select all nav links (desktop and mobile)
+    const navLinks = document.querySelectorAll("nav a");
+    const currentPath = window.location.pathname.split("/").pop() || "index.html";
+  
+    navLinks.forEach((link) => {
+      // Get the href attribute (e.g., "about.html")
+      const linkPath = link.getAttribute("href");
+      // Add 'active' class if the link matches the current page
+      if (linkPath === currentPath) {
+        link.classList.add("active");
+      }
+    });
+  
+    console.log("Nav links found:", navLinks.length);
+  }
+
 // Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Add active class to the current navigation item
-    const currentLocation = window.location.pathname;
-    const navLinks = document.querySelectorAll('nav ul li a');
-    
-    navLinks.forEach(link => {
-        const linkPath = link.getAttribute('href');
-        if (currentLocation.includes(linkPath) && linkPath !== 'index.html') {
-            link.classList.add('active');
-        } else if (currentLocation.endsWith('/') && linkPath === 'index.html') {
-            link.classList.add('active');
-        }
-    });
+     // Include header
+     fetch("header.html")
+     .then((response) => response.text())
+     .then((data) => {
+       document.getElementById("header").innerHTML = data;
+       // Highlight current page after header is loaded
+       highlightCurrentPage();
+     })
+     .catch((error) => console.error("Error loading header:", error));
+ 
+   // Include footer
+   fetch("footer.html")
+     .then((response) => response.text())
+     .then((data) => {
+       document.getElementById("footer").innerHTML = data;
+     })
+     .catch((error) => console.error("Error loading footer:", error));
+
     
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -76,6 +102,8 @@ document.addEventListener('DOMContentLoaded', function() {
             link.setAttribute('rel', 'noopener noreferrer');
         }
     });
+
+    
 });
 
 // Function for adding new tournament entries (for admin use)
